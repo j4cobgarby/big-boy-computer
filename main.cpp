@@ -26,11 +26,19 @@ inline void printram(uint16_t start, uint16_t length) {
             bitset<12>(getoperand(ram[i])).to_string() << endl;
     }
 }
-
+/*
 word_t program[] = {
+    0x6fff, // LDA 4095
+    0x1045, // Add 50 to ac
+    0x5fff, // STA 4095
     0x7000, // INP
     0x7001, // OUT
     0x0000, // HLT
+};
+*/
+
+word_t program[] = {
+    
 };
 
 int main() {

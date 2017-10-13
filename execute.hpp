@@ -14,17 +14,17 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
     case 0x0: // HLT
         return -1;
     case 0x1: // ADD
-        *ac += *ar;
+        *ac += ram[*ar];
         break;
     case 0x2: // SUB
-        *ac -= *ar;
+        *ac -= ram[*ar];
         break;
     case 0x3: // MUL
-        *ac *= *ar;
+        *ac *= ram[*ar];
         break;
     case 0x4: // DIV
         try {
-            *ac /= *ar;
+            *ac /= ram[*ar];
         } catch (const std::exception &ex) {
             cout << "CPU ERROR: Division by zero at " << *pc << endl;
             return -1;
@@ -51,7 +51,9 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
     case 0xa: // JMP
         *pc = *ar - 1;
         break;
-    case 0xb: break;
+    case 0xb:
+        if (*ac > 0) *pc = *ar - 1;
+        break;
     case 0xc: break;
     case 0xd: break;
     case 0xe: break;
