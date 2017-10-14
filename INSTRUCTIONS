@@ -53,30 +53,33 @@ ar = Address register
 
  --- if i change to a 32 bit arch:
 
-        Instruction options
-        ~~~~~~~~
-00000000000000000000000000000000 - 32 bits wide
-~~~~~~~~        ~~~~~~~~~~~~~~~~
-Opcode          Operand
+~~~~~~~~ <- opcode (8 bits)
+00000000000000000000000000000000 - 32 bits wide total
+        ~~~~~~~~~~~~~~~~~~~~~~~~ <- operand (24 bits)
 
-Opcode  Options                 Description
+notes:
+    0:  if ar == 0
+            ac = prompt input
+        if ar == 1
+            output ac
+
+Opcode  Description
 -------------------------------------------
-0x00    -                       HLT
-0x01    1=add by ram address    ADD
-        other=add by value
-0x02    * same as ADD *         SUB
-0x03    * same as ADD *         MUL
-0x04    * same as ADD *         DIV
-0x05    --                      STA
-0x06    --                      LDA
-0x07    --                      INP/OUT
-0x08
-0x09        ------------------
-0x0a        -- NOT FINISHED --
-0x0b        ------------------
-0x0c
-0x0d
-0x0e
+0x00    HLT: stop program execution
+0x01    ADD: ac += ram[ar]
+0x02    SUB: ac -= ram[ar]
+0x03    MUL: ac *= ram[ar]
+0x04    DIV: ac /= ram[ar]
+0x05    RSH: ac >>= ram[ar]
+0x06    LSH: ac <<= ram[ar]
+0x07    NOT: ac = ~ac
+0x08    AND: ac &= ram[ar]
+0x09    OR:  ac |= ram[ar]
+0x0a    XOR: ac ^= ram[ar]
+0x0b    STA: ram[ar] = ac
+0x0c    LDA: ac = ram[ar]
+0x0d    INP/OUT: notes(0)
+0x0e    JMP: transfers flow of execution to ar
 0x0f
 0x10
 0x11

@@ -10,31 +10,28 @@ using std::cin;
 
 const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 
-word_t ram[4096]; // Random access memory, 3072 = vram offset
+word_t ram[8192]; // Random access memory
 int64_t ac; // Accumulator - stores the result of the last calculation
 word_t pc; // Program counter - store address of the next instruction
 word_t ir; // Instruction register - stores top 4 bits of instruction
 sword_t ar; // Address register - stores bottom 12 bits of instruction
 
-inline word_t getopcode(word_t i) { return i >> 12; }
-inline sword_t getoperand(word_t i) { return i & 0x0fff; }
+inline word_t getopcode(word_t i) { return i >> 24; }
+inline sword_t getoperand(word_t i) { return i & 0x00ffffff; }
 inline void printram(uint16_t start, uint16_t length) {
-    cout << "offset\topcode\toperand\n" << std::string(23, '=') << '\n';
+    cout << "offset\tvalue\n" << std::string(23, '=') << '\n';
     for (size_t i = start; i < start + length; i++) {
         cout <<
             "0x" << std::hex << i << ": \t" <<
-            "0x" << std::hex << getopcode(ram[i]) << '\t' <<
-            "0x" << std::hex << getoperand(ram[i]) << endl;
+            "0x" << std::hex << ram[i] << '\t' << endl;
     }
 }
 
 word_t program[] = {
-    0x0001, // Following 1 word is data, not instruction
-    0x0045, // DATA
-    0x7000, // INP
-    0x7002, // OUT
-    0xa002, // JMP 2
-    0x0000, // HLT
+    0x00000000,
+    0x0d000000, // INP
+    0x0d000001, // OUT
+    0x00000000, // HLT
 };
 
 int main() {
@@ -45,7 +42,6 @@ int main() {
         ram[i + PROGRAM_OFFSET] = program[i];
     }
 
-    // Execute program
     do {
         // FETCH/DECODE
         ir = getopcode(ram[pc]);

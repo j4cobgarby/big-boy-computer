@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-typedef uint16_t word_t; // Word length = 16 bits
-typedef int16_t sword_t; // Signed word
+typedef uint32_t word_t; // Word length = 16 bits
+typedef int32_t sword_t; // Signed word
 
 #endif
