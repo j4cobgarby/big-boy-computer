@@ -87,8 +87,8 @@ word_t program[] = {
     0x00000000, // HLT
 };
 
-void drawvid(Display *disp, bool *running) {
-    while (*running) {
+void drawvid(Display *disp) {
+    while (true) {
         disp->draw();
     }
 }
@@ -98,10 +98,8 @@ int main() {
     monitor.setActive(false);
     Display display(&monitor, ram + (sizeof(ram)/sizeof(word_t)) - 256);
 
-    bool running = true;
-
     // Constantly draw the video memory in the background
-    std::thread drawthread(drawvid, &display, &running);
+    std::thread drawthread(drawvid, &display);
 
     pc = PROGRAM_OFFSET + program[0] + 1; // set pc to the first instruction after data
 
@@ -120,7 +118,6 @@ int main() {
     } while (++pc < sizeof(ram) / (sizeof(word_t)));
 
 hlt:
-    running = false;
     system("pause");
 
     drawthread.join();
