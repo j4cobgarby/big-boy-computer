@@ -30,12 +30,14 @@ notes:
                                 0003 <- shows the mode
 
         example:
-            instruction = 0x0d <- INP/OUT instruction
-                              12 <- 0x12 (18th) address in vram
-                                f <- red
-                                 0 <- green
-                                  1 <- blue
-                                   3 <- pixel plotting
+            0x0d12f013
+
+            0x0d        <- INP/OUT instruction
+                12      <- 0x12 (18th) address in vram
+                  f     <- reda
+                   0    <- green
+                    1   <- blue
+                     3  <- pixel plotting
 
 
 Opcode  Description

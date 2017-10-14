@@ -43,7 +43,7 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
             cout << *ac << endl;
         } else if (*ar == 2) {
             cout << (char)*ac << endl;
-        }
+        } else if ()
         return 0;
     case 0x0e: // JMP
         *pc = *ar - 1; return 0;
