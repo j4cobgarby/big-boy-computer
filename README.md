@@ -26,30 +26,33 @@ $ ./a.out # This command may vary depending on your machine. Just run the execut
 # `INSTRUCTIONS`
 
 ```
-~~~~             - Opcode
-0000000000000000 - 16 bits long
-    ~~~~~~~~~~~~ - Operand
+~~~~~~~~ <- opcode (8 bits)
+00000000000000000000000000000000 - 32 bits wide total
+        ~~~~~~~~~~~~~~~~~~~~~~~~ <- operand (24 bits)
 
-ac = Accumulator
-ar = Address register
+notes:
+    0:  if ar == 0
+            ac = prompt input
+        if ar == 1
+            output ac
 
-|	Opcode	|	Description
- d  b     h
+Opcode  Description
+-------------------------------------------
+0x00    HLT: stop program execution
+0x01    ADD: ac += ram[ar]
+0x02    SUB: ac -= ram[ar]
+0x03    MUL: ac *= ram[ar]
+0x04    DIV: ac /= ram[ar]
+0x05    RSH: ac >>= ram[ar]
+0x06    LSH: ac <<= ram[ar]
+0x07    NOT: ac = ~ac
+0x08    AND: ac &= ram[ar]
+0x09    OR:  ac |= ram[ar]
+0x0a    XOR: ac ^= ram[ar]
+0x0b    STA: ram[ar] = ac
+0x0c    LDA: ac = ram[ar]
+0x0d    INP/OUT: notes(0)
+0x0e    JMP: transfers flow of execution to ar
 
- 0	0000  0	|	HLT: ends program execution
- 1	0001  1	|	ADD: ac = ac + ar
- 2	0010  2	|	SUB: ac = ac - ar
- 3	0011  3	|	MUL: ac = ac * ar
- 4	0100  4	|	DIV: ac = ac / ar
- 5	0101  5	|	STA: copy ac to the memory address pointed to by ar
- 6	0110  6	|	LDA: loads memory address pointed to by ar into ac
- 7	0111  7	|	INP/OUT: Input to ac if ar = 0, otherwise display contents of ac
- 8	1000  8	|	JMZ: jumps to address pointed to by ar if ac = 0
- 9	1001  9	|	JNZ: same as JMZ, except only if ac != 0
- 10	1010  a	|	JMP: jump to the address pointed to by ar
- 11	1011  b	|
- 12	1100  c	|
- 13	1101  d	|
- 14	1110  e	|
- 15	1111  f	|
+    -- 0x0f-0xff ommitted, because they're not implemented yet
 ```
