@@ -28,7 +28,7 @@ inline void printram(uint16_t start, uint16_t length) {
 }
 
 word_t program[] = {
-    0x00000001,
+    0x00000001, // Next 1 word isn't instruction, but data
     0x00000041, // 65
     0x0d000000, // INP
     0x01000001, // ADD ram[1]

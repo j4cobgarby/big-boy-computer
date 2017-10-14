@@ -47,6 +47,24 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
         return 0;
     case 0x0e: // JMP
         *pc = *ar - 1; return 0;
+    case 0x0f: // JZ
+        if (*ac == 0) *pc = *ar - 1;
+        return 0;
+    case 0x10: // JNZ
+        if (*ac == 0) *pc = *ar - 1;
+        return 0;
+    case 0x11: // JG
+        if (*ac > 0) *pc = *ar - 1;
+        return 0;
+    case 0x12: //JL
+        if (*ac < 0) *pc = *ar - 1;
+        return 0;
+    case 0x13: // JGE
+        if (*ac >= 0) *pc = *ar - 1;
+        return 0;
+    case 0x14: //JLE
+        if (*ac <= 0) *pc = *ar - 1;
+        return 0;
     default:
         cout << "CPU ERROR: Unrecognised instruction at " << *pc << endl;
         cout << std::hex << *ir << endl;
