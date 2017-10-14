@@ -1,5 +1,7 @@
 #include <iostream>
 #include <bitset>
+#include <iomanip>
+#include <string>
 
 #include "execute.hpp"
 #include "types.hpp"
@@ -20,29 +22,26 @@ sword_t ar; // Address register - stores bottom 12 bits of instruction
 inline word_t getopcode(word_t i) { return i >> 12; }
 inline sword_t getoperand(word_t i) { return i & 0x0fff; }
 inline void printram(uint16_t start, uint16_t length) {
+    cout << "offset\topcode\toperand\n" << std::string(23, '=') << '\n';
     for (size_t i = start; i < start + length; i++) {
-        cout << i << ": \t" <<
-            bitset<4>(getopcode(ram[i])).to_string() << '\t' <<
-            bitset<12>(getoperand(ram[i])).to_string() << endl;
+        cout <<
+            "0x" << std::hex << i << ": \t" <<
+            "0x" << std::hex << getopcode(ram[i]) << '\t' <<
+            "0x" << std::hex << getoperand(ram[i]) << endl;
     }
 }
-/*
+
 word_t program[] = {
-    0x6fff, // LDA 4095
-    0x1045, // Add 50 to ac
-    0x5fff, // STA 4095
+    0x0001, // Following 1 word is data, not instruction
+    0x0045, // DATA
     0x7000, // INP
+    0x2001, // SUB
     0x7001, // OUT
     0x0000, // HLT
 };
-*/
-
-word_t program[] = {
-    
-};
 
 int main() {
-    pc = PROGRAM_OFFSET;
+    pc = PROGRAM_OFFSET + program[0] + 1; // set pc to the first instruction after data
 
     // Load the program into the ram
     for (size_t i = 0; i < sizeof(program) / (sizeof(word_t)); i++) { // Divided by 2 cause 2 bytes per 16 bit word
