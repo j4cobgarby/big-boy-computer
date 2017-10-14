@@ -1,0 +1,3 @@
+C:/Users/Jacob/Documents/Programming Stuff/C++/Big boy computer/build/CMakeFiles/bigboy.dir
+C:/Users/Jacob/Documents/Programming Stuff/C++/Big boy computer/build/CMakeFiles/edit_cache.dir
+C:/Users/Jacob/Documents/Programming Stuff/C++/Big boy computer/build/CMakeFiles/rebuild_cache.dir

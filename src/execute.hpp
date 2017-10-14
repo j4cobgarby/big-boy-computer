@@ -2,6 +2,7 @@
 #define EXECUTE_HPP
 
 #include <iostream>
+#include <cmath>
 
 using std::cout;
 using std::endl;
@@ -37,12 +38,19 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
     case 0x0c: // LDA
         *ac = ram[*ar]; return 0;
     case 0x0d: // INP/OUT
-        if (*ar == 0) {
+        if (*ar == 0) { // input ac
             cout << "-> "; cin >> *ac;
-        } else if (*ar == 1) {
+        } else if (*ar == 1) { // output ac
             cout << *ac << endl;
-        } else if (*ar == 2) {
+        } else if (*ar == 2) { // output ac as ascii
             cout << (char)*ac << endl;
+        } else if ((*ar & 0xf) == 3) { // plot pixel
+            unsigned short int adr = *ar >> 16;
+            unsigned short int r = (*ar & 0xf000) >> 12;
+            unsigned short int g = (*ar & 0xf00) >> 8;
+            unsigned short int b = (*ar & 0xf0) >> 4;
+            unsigned int vram_offset = 8192 - 256;
+            ram[vram_offset+adr] = (r << 20) | (g << 12) | (b << 4);
         }
         return 0;
     case 0x0e: // JMP

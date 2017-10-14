@@ -1,8 +1,11 @@
 #include <iostream> // cout, endl, cin
 #include <string>   // string(int, char)
+#include <thread> // thread
+#include <SFML/Graphics.hpp> // sf
 
 #include "execute.hpp"  // execute()
 #include "types.hpp"    // word_t, sword_t
+#include "pixplot.hpp"
 
 using std::cout;
 using std::endl;
@@ -28,16 +31,76 @@ inline void printram(uint16_t start, uint16_t length) {
 }
 
 word_t program[] = {
-    0x00000001, // Next 1 word isn't instruction, but data
-    0x00000041, // 65
-    0x0d000000, // INP
-    0x01000001, // ADD ram[1]
-    0x0d000002, // OUT
-    0x0e000002, // JMP 2
+    0x00000000,
+
+    0x0d00f003,
+    0x0d01e003,
+    0x0d02d003,
+    0x0d03c003,
+    0x0d04b003,
+    0x0d05a003,
+    0x0d069003,
+    0x0d078003,
+    0x0d087003,
+    0x0d096003,
+    0x0d0a5003,
+    0x0d0b4003,
+    0x0d0c3003,
+    0x0d0d2003,
+    0x0d0e1003,
+    0x0d0f0003,
+
+    0x0d100f03,
+    0x0d110e03,
+    0x0d120d03,
+    0x0d130c03,
+    0x0d140b03,
+    0x0d150a03,
+    0x0d160903,
+    0x0d170803,
+    0x0d180703,
+    0x0d190603,
+    0x0d1a0503,
+    0x0d1b0403,
+    0x0d1c0303,
+    0x0d1d0203,
+    0x0d1e0103,
+    0x0d1f0003,
+
+    0x0d2000f3,
+    0x0d2100e3,
+    0x0d2200d3,
+    0x0d2300c3,
+    0x0d2400b3,
+    0x0d2500a3,
+    0x0d260093,
+    0x0d270083,
+    0x0d280073,
+    0x0d290063,
+    0x0d2a0053,
+    0x0d2b0043,
+    0x0d2c0033,
+    0x0d2d0023,
+    0x0d2e0013,
+    0x0d2f0003,
+
     0x00000000, // HLT
 };
 
+void drawvid(Display *disp) {
+    while (true) {
+        disp->draw();
+    }
+}
+
 int main() {
+    sf::RenderWindow monitor(sf::VideoMode(16 * PIXEL_SIZE, 16 * PIXEL_SIZE), "Monitor");
+    monitor.setActive(false);
+    Display display(&monitor, ram + (sizeof(ram)/sizeof(word_t)) - 256);
+
+    // Constantly draw the video memory in the background
+    std::thread drawthread(drawvid, &display);
+
     pc = PROGRAM_OFFSET + program[0] + 1; // set pc to the first instruction after data
 
     // Load the program into the ram
@@ -56,4 +119,6 @@ int main() {
 
 hlt:
     system("pause");
+
+    drawthread.join();
 }
