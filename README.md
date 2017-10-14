@@ -14,13 +14,18 @@ Current features:
 
 # Building
 
-Make sure you have g++ installed, then..
+Make sure you have:
+ - g++
+ - cmake
+ - sfml (for pixel plotting)
 
 ```
 $ git clone https://github.com/j4cobgarby/big-boy-computer.git
-$ cd big-boy-computer
-$ g++ main.cpp
-$ ./a.out # This command may vary depending on your machine. Just run the executable.
+$ cd big-boy-computer/build
+$ # Depending on your setup, you may want to modify link_directories and
+$ # include_directories in CMakeLists.txt.
+$ cmake ../src -G "<Insert your favourite Makefiles type here>"
+$ make
 ```
 
 # `INSTRUCTIONS`
