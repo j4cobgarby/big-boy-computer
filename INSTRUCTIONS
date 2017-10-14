@@ -1,57 +1,6 @@
 IMPORTANT:
 First word of a program are the amount of data positions to initialise
-e.g. 0x0002 would mean the next 2 words in memory are data, not instructions
 A program must begin with this
-
-~~~~             - Opcode
-0000000000000000 - 16 bits wide
-    ~~~~~~~~~~~~ - Operand
-
-ac = Accumulator
-ar = Address register
-
-|	Opcode	|	Description
- d  b     h
-
- 0	0000  0	|	HLT: ends program execution
- 1	0001  1	|	ADD: ac = ac + ram[ar]
- 2	0010  2	|	SUB: ac = ac - ram[ar]
- 3	0011  3	|	MUL: ac = ac * ram[ar]
- 4	0100  4	|	DIV: ac = ac / ram[ar]
- 5	0101  5	|	STA: copy ac to the memory address pointed to by ar
- 6	0110  6	|	LDA: loads memory address pointed to by ar into ac
- 7	0111  7	|	INP/OUT: *1
- 8	1000  8	|	JMZ: jumps to address pointed to by ar if ac = 0
- 9	1001  9	|	JNZ: same as JMZ, except only if ac != 0
- 10	1010  a	|	JMP: jump to the address pointed to by ar
- 11	1011  b	|   JGZ: jump if ac > 0
- 12	1100  c	|   RSH: ac = ac >> ram[ar]
- 13	1101  d	|   LSH: ac = ac << ram[ar]
- 14	1110  e	|   AND: ac = ac & ram[ar]
- 15	1111  f	|   OR:  ac = ac | ram[ar]
-
-*1: Input to ac if ar = 0, 1 = out ac, 2 = out ac as ASCII, other = pixel output
-
-    PIXEL OUTPUT: 32x32 4bit screen
-            vram = video memory
-
-        operand synopsis:
-            vram offset (0-1023) -> 0000000000 00 <- Colour (4bit)
-
-            e.g. 001011000010b = 0x2c2
-
-        colour: (similar to game boy 4bit palette)
-            0: DARKEST
-            1: DARK
-            2: LIGHT
-            3: LIGHTEST
-
-        video memory offset:
-            The last 1024 ram addresses are reserved for video memory.
-            each of these addresses have a value from 0 to 3 inclusive, describing
-            the colour
-
- --- if i change to a 32 bit arch:
 
 ~~~~~~~~ <- opcode (8 bits)
 00000000000000000000000000000000 - 32 bits wide total
