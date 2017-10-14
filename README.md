@@ -10,7 +10,8 @@ A very simple CPU emulator written in c++, inspired by [LMC](https://peterhiggin
 
 Current features:
  - Fetch-decode-execute cycle
- - 32-bit architecture (256 CPU instructions)
+ - 32-bit architecture (256 CPU instructions, not all implemented)
+ - A 16x16 pixels "monitor" with a 12-bit colour depth
 
 # Building
 
