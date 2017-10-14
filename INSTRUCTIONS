@@ -20,7 +20,7 @@ ar = Address register
  4	0100  4	|	DIV: ac = ac / ram[ar]
  5	0101  5	|	STA: copy ac to the memory address pointed to by ar
  6	0110  6	|	LDA: loads memory address pointed to by ar into ac
- 7	0111  7	|	INP/OUT: Input to ac if ar = 0, 1 = out ac, 2 = out ac as ASCII
+ 7	0111  7	|	INP/OUT: *1
  8	1000  8	|	JMZ: jumps to address pointed to by ar if ac = 0
  9	1001  9	|	JNZ: same as JMZ, except only if ac != 0
  10	1010  a	|	JMP: jump to the address pointed to by ar
@@ -30,6 +30,26 @@ ar = Address register
  14	1110  e	|   AND: ac = ac & ram[ar]
  15	1111  f	|   OR:  ac = ac | ram[ar]
 
+*1: Input to ac if ar = 0, 1 = out ac, 2 = out ac as ASCII, other = pixel output
+
+    PIXEL OUTPUT: 32x32 4bit screen
+            vram = video memory
+
+        operand synopsis:
+            vram offset (0-1023) -> 0000000000 00 <- Colour (4bit)
+
+            e.g. 001011000010b = 0x2c2
+
+        colour: (similar to game boy 4bit palette)
+            0: DARKEST
+            1: DARK
+            2: LIGHT
+            3: LIGHTEST
+
+        video memory offset:
+            The last 1024 ram addresses are reserved for video memory.
+            each of these addresses have a value from 0 to 3 inclusive, describing
+            the colour
 
  --- if i change to a 32 bit arch:
 

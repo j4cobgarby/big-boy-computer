@@ -2,6 +2,7 @@
 #include <bitset>
 #include <iomanip>
 #include <string>
+#include <cstdlib>
 
 #include "execute.hpp"
 #include "types.hpp"
@@ -13,7 +14,7 @@ using std::bitset;
 
 const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 
-word_t ram[4096]; // Random access memory
+word_t ram[4096]; // Random access memory, 3072 = vram offset
 int64_t ac; // Accumulator - stores the result of the last calculation
 word_t pc; // Program counter - store address of the next instruction
 word_t ir; // Instruction register - stores top 4 bits of instruction
@@ -35,8 +36,8 @@ word_t program[] = {
     0x0001, // Following 1 word is data, not instruction
     0x0045, // DATA
     0x7000, // INP
-    0x2001, // SUB
-    0x7001, // OUT
+    0x7002, // OUT
+    0xa002, // JMP 2
     0x0000, // HLT
 };
 
