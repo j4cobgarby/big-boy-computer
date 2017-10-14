@@ -87,11 +87,21 @@ word_t program[] = {
     0x00000000, // HLT
 };
 
+void drawvid(Display *disp, bool *running) {
+    while (*running) {
+        disp->draw();
+    }
+}
+
 int main() {
     sf::RenderWindow monitor(sf::VideoMode(16 * PIXEL_SIZE, 16 * PIXEL_SIZE), "Monitor");
+    monitor.setActive(false);
     Display display(&monitor, ram + (sizeof(ram)/sizeof(word_t)) - 256);
 
-    //ram[(sizeof(ram)/sizeof(word_t)) - 256] = 0xf000f0;
+    bool running = true;
+
+    // Constantly draw the video memory in the background
+    std::thread drawthread(drawvid, &display, &running);
 
     pc = PROGRAM_OFFSET + program[0] + 1; // set pc to the first instruction after data
 
@@ -107,9 +117,11 @@ int main() {
 
         // EXECUTE
         if (execute(ram, &ac, &pc, &ir, &ar) == -1) goto hlt;
-        display.draw();
     } while (++pc < sizeof(ram) / (sizeof(word_t)));
 
 hlt:
+    running = false;
     system("pause");
+
+    drawthread.join();
 }
