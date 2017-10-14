@@ -16,8 +16,8 @@ const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 word_t ram[8192]; // Random access memory
 int64_t ac; // Accumulator - stores the result of the last calculation
 word_t pc; // Program counter - store address of the next instruction
-word_t ir; // Instruction register - stores top 4 bits of instruction
-sword_t ar; // Address register - stores bottom 12 bits of instruction
+word_t ir; // Instruction register - stores top 8 bits of instruction
+sword_t ar; // Address register - stores bottom 24 bits of instruction
 
 inline word_t getopcode(word_t i) { return i >> 24; }
 inline sword_t getoperand(word_t i) { return i & 0x00ffffff; }

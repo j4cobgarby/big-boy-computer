@@ -30,6 +30,15 @@ $ make
 
 # `INSTRUCTIONS`
 
+## Overview of the registers
+```
+int64_t ac; // Accumulator - stores the result of the last calculation
+word_t pc; // Program counter - store address of the next instruction
+word_t ir; // Instruction register - stores top 8 bits of instruction
+sword_t ar; // Address register - stores bottom 24 bits of instruction
+```
+
+## CPU instructions
 ```
 IMPORTANT:
 First word of a program are the amount of data positions to initialise
