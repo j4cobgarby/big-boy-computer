@@ -1,16 +1,12 @@
-#include <iostream>
-#include <bitset>
-#include <iomanip>
-#include <string>
-#include <cstdlib>
+#include <iostream> // cout, endl, cin
+#include <string>   // string(int, char)
 
-#include "execute.hpp"
-#include "types.hpp"
+#include "execute.hpp"  // execute()
+#include "types.hpp"    // word_t, sword_t
 
 using std::cout;
 using std::endl;
 using std::cin;
-using std::bitset;
 
 const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 
