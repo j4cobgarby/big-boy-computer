@@ -28,9 +28,12 @@ inline void printram(uint16_t start, uint16_t length) {
 }
 
 word_t program[] = {
-    0x00000000,
+    0x00000001,
+    0x00000041, // 65
     0x0d000000, // INP
-    0x0d000001, // OUT
+    0x01000001, // ADD ram[1]
+    0x0d000002, // OUT
+    0x0e000002, // JMP 2
     0x00000000, // HLT
 };
 

@@ -41,12 +41,15 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
             cout << "-> "; cin >> *ac;
         } else if (*ar == 1) {
             cout << *ac << endl;
+        } else if (*ar == 2) {
+            cout << (char)*ac << endl;
         }
         return 0;
     case 0x0e: // JMP
-        *pc = *ar - 1;
+        *pc = *ar - 1; return 0;
     default:
         cout << "CPU ERROR: Unrecognised instruction at " << *pc << endl;
+        cout << std::hex << *ir << endl;
         return -1;
     }
 }

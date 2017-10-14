@@ -11,6 +11,8 @@ notes:
             ac = prompt input
         if ar == 1
             output ac
+        if ar == 2
+            output ascii[ac]
 
 Opcode  Description
 -------------------------------------------
