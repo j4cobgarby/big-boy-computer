@@ -1,6 +1,5 @@
 IMPORTANT:
-First word of a program are the amount of data positions to initialise
-A program must begin with this
+First word of a program is the amount of data positions to initialise
 
 ~~~~~~~~ <- opcode (8 bits)
 00000000000000000000000000000000 - 32 bits wide total
