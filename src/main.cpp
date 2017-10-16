@@ -32,28 +32,26 @@ inline void printram(uint16_t start, uint16_t length) {
 
 word_t program[] {
     0x00000001,
-    0x00ff0000,
+    0x00000040,
 
-    0x0c000001,
-    0x0b001fff,
+    0x0d000000,
+    0x0f000007, // jump to halt if ac = 0
+    0x01000001,
+    0x0d000002,
+    0x0e000002,
 
-    0x00000000,
+    0x00000000, // halt
 };
 
+bool running = true;
+
 void drawvid(Display *disp) {
-    while (true) {
+    while (running) {
         disp->draw();
     }
 }
 
 int main() {
-    sf::RenderWindow monitor(sf::VideoMode(16 * PIXEL_SIZE, 16 * PIXEL_SIZE), "Monitor");
-    monitor.setActive(false);
-    Display display(&monitor, ram + (sizeof(ram)/sizeof(word_t)) - 256);
-
-    // Constantly draw the video memory in the background
-    std::thread drawthread(drawvid, &display);
-
     pc = PROGRAM_OFFSET + program[0] + 1; // set pc to the first instruction after data
 
     // Load the program into the ram
@@ -69,9 +67,6 @@ int main() {
         // EXECUTE
         if (execute(ram, &ac, &pc, &ir, &ar) == -1) goto hlt;
     } while (++pc < sizeof(ram) / (sizeof(word_t)));
-
 hlt:
     system("pause");
-
-    drawthread.join();
 }
