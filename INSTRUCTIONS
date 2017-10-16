@@ -13,8 +13,6 @@ notes:
             output ac
         if ar == 2
             output ascii[ac]
-        if least significant 1 bit of ar == 3
-            set pixel (refer to notes(1))
 
     1: pixel plotting:
         vram:
