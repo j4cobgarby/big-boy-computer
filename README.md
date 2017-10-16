@@ -22,9 +22,11 @@ Make sure you have:
 
 ```
 $ git clone https://github.com/j4cobgarby/big-boy-computer.git
-$ cd big-boy-computer/build
-$ # Depending on your setup, you may want to modify link_directories and
-$ # include_directories in CMakeLists.txt.
+$ mkdir big-boy-computer/build && cd big-boy-computer/build
+```
+Depending on your setup, you may want to modify link_directories and include_directories
+in CMakeLists.txt.
+```
 $ cmake ../src -G "<Insert your favourite Makefiles type here>"
 $ make
 ```
