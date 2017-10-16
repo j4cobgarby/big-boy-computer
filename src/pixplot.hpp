@@ -14,9 +14,16 @@ private:
 public:
     Display(sf::RenderWindow *window, word_t *vram) : window(window), vram(vram) {}
     void draw();
+    bool windowopen() {return window->isOpen();}
 };
 
 void Display::draw() {
+    sf::Event event;
+    while (window->pollEvent(event)) {
+        if (event.type == sf::Event::Closed)
+            window->close();
+    }
+
     window->clear(sf::Color::Black);
     for (int i = 0; i < 256; i++) {
         sf::RectangleShape pix(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));

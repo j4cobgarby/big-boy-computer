@@ -39,7 +39,7 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
         *ac = ram[*ar]; return 0;
     case 0x0d: // INP/OUT
         if (*ar == 0) { // input ac
-            cout << "-> "; cin >> *ac;
+            cin >> *ac;
         } else if (*ar == 1) { // output ac
             cout << *ac << endl;
         } else if (*ar == 2) { // output ac as ascii
@@ -67,7 +67,7 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
         if (*ac <= 0) *pc = *ar - 1;
         return 0;
     default:
-        cout << "CPU ERROR: Unrecognised instruction at " << *pc << endl;
+        cout << "CPU ERROR: Unimplemented instruction" << *pc << endl;
         cout << std::hex << *ir << endl;
         return -1;
     }
