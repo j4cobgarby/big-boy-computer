@@ -40,8 +40,10 @@ word_t program[] {
     0x00000000,
 };
 
+bool running = true;
+
 void drawvid(Display *disp) {
-    while (true) {
+    while (running) {
         disp->draw();
     }
 }
@@ -71,7 +73,9 @@ int main() {
     } while (++pc < sizeof(ram) / (sizeof(word_t)));
 
 hlt:
-    system("pause");
+    cout << "Press ENTER to exit . . .";
+    cin.ignore();
+    running = false;
 
     drawthread.join();
 }
