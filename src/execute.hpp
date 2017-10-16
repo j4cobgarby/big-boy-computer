@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <limits>
 
 using std::cout;
 using std::endl;
@@ -39,11 +40,15 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
         *ac = ram[*ar]; return 0;
     case 0x0d: // INP/OUT
         if (*ar == 0) { // input ac
-            cin >> *ac;
+            while (!(cin >> *ac)) {
+                cout << "INVALID INPUT ERROR: try again" << endl;
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
         } else if (*ar == 1) { // output ac
-            cout << *ac << endl;
+            cout << *ac;
         } else if (*ar == 2) { // output ac as ascii
-            cout << (char)*ac << endl;
+            cout << (char)*ac;
         }
         return 0;
     case 0x0e: // JMP

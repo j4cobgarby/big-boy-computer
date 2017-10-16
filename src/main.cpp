@@ -13,7 +13,7 @@ using std::cin;
 
 const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 
-word_t ram[8192]; // Random access memory
+word_t ram[16777216]; // Random access memory
 int64_t ac; // Accumulator - stores the result of the last calculation
 word_t pc; // Program counter - store address of the next instruction
 word_t ir; // Instruction register - stores top 8 bits of instruction
@@ -31,14 +31,17 @@ inline void printram(uint16_t start, uint16_t length) {
 }
 
 word_t program[] {
-    0x00000001,
-    0x00000040,
+    0x00000002,
+    0x00000040, // start of ascii alphabet
+    0x0000000a, // newline
 
-    0x0d000000,
-    0x0f000007, // jump to halt if ac = 0
-    0x01000001,
-    0x0d000002,
-    0x0e000002,
+    0x0d000000, // input to ac
+    0x0f00000a, // jump to halt if ac = 0
+    0x01000001, // add start of ascii alphabet to ac
+    0x0d000002, // output ac as ascii
+    0x0c000002, // load the newline
+    0x0d000002, // print newline
+    0x0e000003, // jump back to input
 
     0x00000000, // halt
 };
