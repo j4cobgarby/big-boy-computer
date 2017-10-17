@@ -2,6 +2,7 @@
 #include <string>   // string(int, char)
 #include <thread> // thread
 #include <SFML/Graphics.hpp> // sf
+#include <fstream> // ifstream, ofstream
 
 #include "execute.hpp"  // execute()
 #include "types.hpp"    // word_t, sword_t
@@ -13,7 +14,7 @@ using std::cin;
 
 const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 
-word_t ram[16777216]; // Random access memory
+word_t ram[16777216]; // Random access memory - 16 mega-words
 int64_t ac; // Accumulator - stores the result of the last calculation
 word_t pc; // Program counter - store address of the next instruction
 word_t ir; // Instruction register - stores top 8 bits of instruction
@@ -30,22 +31,6 @@ inline void printram(uint16_t start, uint16_t length) {
     }
 }
 
-word_t program[] {
-    0x00000002,
-    0x00000040, // start of ascii alphabet
-    0x0000000a, // newline
-
-    0x0d000000, // input to ac
-    0x0f00000a, // jump to halt if ac = 0
-    0x01000001, // add start of ascii alphabet to ac
-    0x0d000002, // output ac as ascii
-    0x0c000002, // load the newline
-    0x0d000002, // print newline
-    0x0e000003, // jump back to input
-
-    0x00000000, // halt
-};
-
 bool running = true;
 
 void drawvid(Display *disp) {
@@ -54,13 +39,45 @@ void drawvid(Display *disp) {
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    std::string binfile_name;
+    cout << "Local path to the binary file to load: ";
+    cin >> binfile_name;
+    std::ifstream pfile(binfile_name, std::ios::binary | std::ios::ate);
+
+    std::size_t proglength = pfile.tellg();
+    pfile.seekg(0, std::ios::beg);
+
+    word_t program[11];
+
+    cout << "Loading binary from: " << binfile_name << endl;
+    cout << "The binary file is " << proglength << " bytes long." << endl;
+
+    for (size_t i = 0; i < proglength; i++) {
+        // Every four (8bit) characters in the file are one 32bit word
+        if (i % sizeof(word_t) == 0) { // i = 0, 4, 8, ...
+            char *tmp = new char[sizeof(word_t)];
+            word_t inst = 0;
+
+            pfile.seekg(i);
+            pfile.read(tmp, sizeof(word_t));
+
+            for (size_t c = 0; c < sizeof(word_t); c++) {
+                inst += tmp[c] << ((3-c) * (sizeof(word_t) * 2));
+            }
+            program[i/sizeof(word_t)] = inst;
+        }
+    }
+    cout << "Done." << endl;
+
     pc = PROGRAM_OFFSET + program[0] + 1; // set pc to the first instruction after data
 
     // Load the program into the ram
+    cout << "Loading program into RAM" << endl;
     for (size_t i = 0; i < sizeof(program) / (sizeof(word_t)); i++) { // Divided by 2 cause 2 bytes per 16 bit word
         ram[i + PROGRAM_OFFSET] = program[i];
     }
+    cout << "Done." << "\nEmulating program...\n" << endl;
 
     do {
         // FETCH/DECODE
