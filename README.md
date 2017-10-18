@@ -81,3 +81,9 @@ And, annotated:
 ... (rest of program) ...
 00000000    # And all programs must end with 0, which is the halt instruction
 ```
+
+## Writing your program to file
+
+This is very simple:
+ - Get a hex editor
+ - Literally just type out your program's instructions as hex

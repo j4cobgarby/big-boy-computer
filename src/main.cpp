@@ -41,8 +41,14 @@ void drawvid(Display *disp) {
 
 int main(int argc, char *argv[]) {
     std::string binfile_name;
-    cout << "Local path to the binary file to load: ";
-    cin >> binfile_name;
+
+    if (argc <= 1) {
+        cout << "Local path to the binary file to load: ";
+        cin >> binfile_name;
+    } else {
+        // Command-line arg given
+        binfile_name = argv[1];
+    }
     std::ifstream pfile(binfile_name, std::ios::binary | std::ios::ate);
 
     std::size_t proglength = pfile.tellg();
@@ -88,5 +94,5 @@ int main(int argc, char *argv[]) {
         if (execute(ram, &ac, &pc, &ir, &ar) == -1) goto hlt;
     } while (++pc < sizeof(ram) / (sizeof(word_t)));
 hlt:
-    system("pause");
+    cout << "Done." << endl;
 }
