@@ -43,8 +43,8 @@ Opcode  Description
 0x14    JLE: JMP if ac <= 0
 0x15    INC: ac += 1
 0x16    DEC: ac -= 1
-0x17
-0x18
+0x17    PUSH: stack[sp] = ac ; sp -= 1
+0x18    POP: ac = stack[sp] ; sp += 1
 0x19
 0x1a
 0x1b

@@ -12,7 +12,10 @@ using std::cin;
 
 #include "types.hpp"
 
-inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar) {
+inline int execute(word_t *ram, int64_t *ac, 
+        word_t *pc, word_t *ir, sword_t *ar, 
+        word_t *sp, word_t *stack_start) 
+    {
     srand(time(NULL));
     ram[0xf0] = rand() % 0xffffffff;
 
@@ -89,8 +92,23 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
     case 0x16: // DEC
         *ac -= 1;
         return 0;
+    case 0x17: // PUSH
+        stack_start[*sp] = *ac;
+        *sp -= 1;
+        *sp = (*sp < 0 ? 0 : *sp);
+
+        for (int i = 0; i <= 0xff; i++) {
+            cout << "\t" << i << "\t" << stack_start[i] << endl;
+        }
+
+        return 0;
+    case 0x18: // POP
+        *sp += 1;
+        *sp = (*sp > 0xff ? 0xff : *sp);
+        *ac = stack_start[*sp];
+        return 0;
     default:
-        cout << "CPU ERROR: Unimplemented instruction" << *pc << endl;
+        cout << "CPU ERROR: Unimplemented instruction: " << *pc << endl;
         cout << std::hex << *ir << endl;
         return -1;
     }
