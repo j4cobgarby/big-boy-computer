@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <ctime>
 #include <limits>
 
 using std::cout;
@@ -12,6 +13,9 @@ using std::cin;
 #include "types.hpp"
 
 inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar) {
+    srand(time(NULL));
+    ram[0xf0] = rand() % 0xffffffff;
+
     switch (*ir) {
     case 0x00: return -1;
     case 0x01: // ADD
