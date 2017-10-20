@@ -41,7 +41,7 @@ void drawvid(Display *disp) {
 
 void monitor_registers() {
     sf::RenderWindow win(sf::VideoMode(1500, 1500), "Register Monitor");
-    Display disp(&win, ram + (0xffff - 255));
+    Display disp(&win, ram + (0xffff - 0xfff));
     sf::Font fnt;
     fnt.loadFromFile("../assets/sansation/Sansation_Regular.ttf");
 
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 
             pfile.seekg(i);
             pfile.read(tmp, sizeof(word_t));
-            
+
             pieces[0] = (int)tmp[0] & 0xff;
             pieces[1] = (int)tmp[1] & 0xff;
             pieces[2] = (int)tmp[2] & 0xff;
@@ -116,9 +116,6 @@ int main(int argc, char *argv[]) {
 
             program[i/sizeof(word_t)] = (pieces[0] << 24) + (pieces[1] << 16) + (pieces[2] << 8) + (pieces[3]);
         }
-    }
-    for (size_t i = 0; i < proglength/4; i++) {
-        cout << "PROGRAM " << i << " = " << std::hex << program[i] << endl;
     }
     cout << "Done." << endl;
 
