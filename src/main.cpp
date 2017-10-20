@@ -14,14 +14,37 @@ using std::cin;
 
 const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 
-word_t ram[0xffff]; // Random access memory
+word_t ram[0xffff]; // Random access memory, video memory starts at 0xf000
 int64_t ac; // Accumulator - stores the result of the last calculation
+sword_t x; // General purpose register 1
+sword_t y; // General purpose register 2
+word_t sp; // Stack pointer
 word_t pc; // Program counter - store address of the next instruction
 word_t ir; // Instruction register - stores top 8 bits of instruction
 sword_t ar; // Address register - stores bottom 24 bits of instruction
 
+unsigned int palette[16] {
+     0x000000ff, // 0:  Black
+     0x0000c0ff, // 1:  Blue
+     0xc00000ff, // 2:  Red
+     0xc000c0ff, // 3:  Magenta
+     0x00c000ff, // 4:  Green
+     0x00c0c0ff, // 5:  Cyan
+     0xc0c000ff, // 6:  Yellow
+     0xc0c0c0ff, // 7:  White
+     0x000000ff, // 8:  Black
+     0x0000ffff, // 9:  Bright Blue
+     0xff0000ff, // 10: Bright Red
+     0xff00ffff, // 11: Bright Magenta
+     0x00ff00ff, // 12: Bright Green
+     0x00ffffff, // 13: Bright Cyan
+     0xffff00ff, // 14: Bright Yellow
+     0xffffffff, // 16: Bright White
+};
+
 inline word_t getopcode(word_t i) { return i >> 24; }
 inline sword_t getoperand(word_t i) { return i & 0x00ffffff; }
+
 inline void printram(uint16_t start, uint16_t length) {
     cout << "offset\tvalue\n" << std::string(23, '=') << '\n';
     for (size_t i = start; i < start + length; i++) {
@@ -63,8 +86,7 @@ void monitor_registers() {
         txt.setString("Accumulator: " + std::to_string(ac) +
             "\nProgram Counter: " + std::to_string(pc) +
             "\nInstruction Register: " + std::to_string(ir) +
-            "\nAddress Register: " + std::to_string(ar) +
-            "\nram[ffff]: " + std::to_string(ram[0xffff])
+            "\nAddress Register: " + std::to_string(ar)
         );
 
         win.draw(txt);
@@ -76,8 +98,6 @@ void monitor_registers() {
 }
 
 int main(int argc, char *argv[]) {
-    //ram[0xff00] = 0xff00ff;
-    //ram[0xffff] = 0x00ff00;
     std::thread mon_reg_thread(monitor_registers);
 
     std::string binfile_name;
