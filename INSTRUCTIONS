@@ -5,6 +5,8 @@ First word of a program is the amount of data positions to initialise
 00000000000000000000000000000000 - 32 bits wide total
         ~~~~~~~~~~~~~~~~~~~~~~~~ <- operand (24 bits)
 
+00 00 00 00 <- Hex
+
 notes:
     0:  if ar == 0
             ac = prompt input

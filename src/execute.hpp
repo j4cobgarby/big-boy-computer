@@ -35,6 +35,7 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
     case 0x0a: // XOR
         *ac ^= ram[*ar]; return 0;
     case 0x0b: // STA
+        cout << "Storing " << *ac << " in " << *ar << endl;
         ram[*ar] = *ac; return 0;
     case 0x0c: // LDA
         *ac = ram[*ar]; return 0;

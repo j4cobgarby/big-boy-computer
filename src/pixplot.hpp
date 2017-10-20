@@ -18,20 +18,18 @@ public:
 };
 
 void Display::draw() {
-    sf::Event event;
-    while (window->pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            window->close();
-    }
-
-    window->clear(sf::Color::Black);
+    sf::RectangleShape border(sf::Vector2f(PIXEL_SIZE*16, PIXEL_SIZE*16));
+    border.setPosition(sf::Vector2f(400, 0));
+    border.setFillColor(sf::Color::Transparent);
+    border.setOutlineColor(sf::Color::White);
+    border.setOutlineThickness(2);
+    window->draw(border);
     for (int i = 0; i < 256; i++) {
         sf::RectangleShape pix(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE));
-        pix.setPosition(sf::Vector2f((i%16) * PIXEL_SIZE, ((int)i/16) * PIXEL_SIZE));
+        pix.setPosition(sf::Vector2f(((i%16) * PIXEL_SIZE) + 400, ((int)i/16) * PIXEL_SIZE));
         pix.setFillColor(sf::Color((vram[i] << 8) + 0xff));
         window->draw(pix);
     }
-    window->display();
 }
 
 #endif
