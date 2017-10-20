@@ -97,10 +97,6 @@ inline int execute(word_t *ram, int64_t *ac,
         *sp -= 1;
         *sp = (*sp < 0 ? 0 : *sp);
 
-        for (int i = 0; i <= 0xff; i++) {
-            cout << "\t" << i << "\t" << stack_start[i] << endl;
-        }
-
         return 0;
     case 0x18: // POP
         *sp += 1;
