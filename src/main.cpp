@@ -76,8 +76,6 @@ void monitor_registers() {
 }
 
 int main(int argc, char *argv[]) {
-    //ram[0xff00] = 0xff00ff;
-    //ram[0xffff] = 0x00ff00;
     std::thread mon_reg_thread(monitor_registers);
 
     std::string binfile_name;
