@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <ctime>
 #include <limits>
 
 using std::cout;
@@ -12,6 +13,9 @@ using std::cin;
 #include "types.hpp"
 
 inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar) {
+    srand(time(NULL));
+    ram[0xf0] = rand() % 0xffffffff;
+
     switch (*ir) {
     case 0x00: return -1;
     case 0x01: // ADD
@@ -49,6 +53,14 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
             cout << *ac;
         } else if (*ar == 2) { // output ac as ascii
             cout << (char)*ac;
+        } else if (*ar == 3) { // input ascii
+            char in;
+            while (!(cin >> in)) {
+                cout << "INVALID INPUT ERROR: trye again" << endl;
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+            *ac = in;
         }
         return 0;
     case 0x0e: // JMP
@@ -70,6 +82,12 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
         return 0;
     case 0x14: //JLE
         if (*ac <= 0) *pc = *ar - 1;
+        return 0;
+    case 0x15: // INC
+        *ac++;
+        return 0;
+    case 0x16: // DEC
+        *ac--;
         return 0;
     default:
         cout << "CPU ERROR: Unimplemented instruction" << *pc << endl;

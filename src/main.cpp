@@ -14,7 +14,7 @@ using std::cin;
 
 const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
 
-word_t ram[0xffff]; // Random access memory
+word_t ram[0xffff]; // Random access memory, video memory starts at 0xf000
 int64_t ac; // Accumulator - stores the result of the last calculation
 word_t pc; // Program counter - store address of the next instruction
 word_t ir; // Instruction register - stores top 8 bits of instruction
@@ -76,8 +76,6 @@ void monitor_registers() {
 }
 
 int main(int argc, char *argv[]) {
-    //ram[0xff00] = 0xff00ff;
-    //ram[0xffff] = 0x00ff00;
     std::thread mon_reg_thread(monitor_registers);
 
     std::string binfile_name;
