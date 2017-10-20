@@ -12,16 +12,15 @@ using std::cout;
 using std::endl;
 using std::cin;
 
-const word_t PROGRAM_OFFSET = 0; // How far into the memory the program begins
+const word_t PROGRAM_OFFSET = 0x0; // How far into the memory the program begins
+const word_t STACK_OFFSET = 0x100; // How far into the memory the stack begins
 
 word_t ram[0xffff]; // Random access memory, video memory starts at 0xf000
 int64_t ac; // Accumulator - stores the result of the last calculation
-sword_t x; // General purpose register 1
-sword_t y; // General purpose register 2
-word_t sp; // Stack pointer
 word_t pc; // Program counter - store address of the next instruction
 word_t ir; // Instruction register - stores top 8 bits of instruction
 sword_t ar; // Address register - stores bottom 24 bits of instruction
+word_t sp = 0xff; // Stack pointer (stack is ram[0x0100 -> 0x01ff]), accessed via STACK_OFFSET + sp
 
 unsigned int palette[16] {
      0x000000ff, // 0:  Black
@@ -157,7 +156,7 @@ int main(int argc, char *argv[]) {
 
         // EXECUTE
         sf::sleep(sf::milliseconds(100));
-        if (execute(ram, &ac, &pc, &ir, &ar) == -1) goto hlt;
+        if (execute(ram, &ac, &pc, &ir, &ar, &sp, ram+STACK_OFFSET) == -1) goto hlt;
     } while (++pc < sizeof(ram) / (sizeof(word_t)));
 hlt:
     cout << "Done." << endl;
