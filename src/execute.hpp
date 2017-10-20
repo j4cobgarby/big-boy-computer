@@ -84,10 +84,10 @@ inline int execute(word_t *ram, int64_t *ac, word_t *pc, word_t *ir, sword_t *ar
         if (*ac <= 0) *pc = *ar - 1;
         return 0;
     case 0x15: // INC
-        *ac++;
+        *ac += 1;
         return 0;
     case 0x16: // DEC
-        *ac--;
+        *ac -= 1;
         return 0;
     default:
         cout << "CPU ERROR: Unimplemented instruction" << *pc << endl;
